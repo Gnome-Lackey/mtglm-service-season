@@ -11,5 +11,6 @@ module.exports.handler = requestMiddleware(
     const response = await controller.create(data);
 
     return response;
-  }
+  },
+  true
 );

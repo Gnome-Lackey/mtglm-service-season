@@ -9,9 +9,10 @@ import * as controller from "../controllers";
 module.exports.handler = requestMiddleware(
   async (path: SeasonPathParameters, data: SeasonUpdateRequest): Promise<LambdaResponse> => {
     const { seasonId } = path;
-    
+
     const response = await controller.update(seasonId, data);
 
     return response;
-  }
+  },
+  true
 );
