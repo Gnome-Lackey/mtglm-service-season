@@ -4,12 +4,12 @@ Properties:
   AttributeDefinitions:
     - AttributeName: seasonId
       AttributeType: S
-    - AttributeName: startedDate
+    - AttributeName: startDate
       AttributeType: S
   KeySchema:
     - AttributeName: seasonId
       KeyType: HASH
-    - AttributeName: startedDate
+    - AttributeName: startDate
       KeyType: RANGE
   ProvisionedThroughput: 
     ReadCapacityUnits: 1
