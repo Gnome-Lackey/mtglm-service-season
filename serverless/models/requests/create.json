@@ -11,7 +11,7 @@
         "title": "SeasonPlayerIds"
       }
     },
-    "seasons": {
+    "matches": {
       "type": "array",
       "items": {
         "type": "string",
@@ -29,6 +29,10 @@
     "endedOOn": {
       "type": "string",
       "title": "SeasonDateEnded"
+    },
+    "isActive": {
+      "type": "boolean",
+      "title": "SeasonIsActive"
     },
     "top": {
       "type": "array",

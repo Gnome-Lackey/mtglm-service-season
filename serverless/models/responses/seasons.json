@@ -17,12 +17,16 @@
           "title": "SeasonPlayerIds"
         }
       },
-      "seasons": {
+      "matches": {
         "type": "array",
         "items": {
           "type": "string",
           "title": "SeasonMatchIds"
         }
+      },
+      "isActive": {
+        "type": "boolean",
+        "title": "SeasonIsActive"
       },
       "set": {
         "type": "string",
