@@ -1,0 +1,39 @@
+api:
+  info:
+    version: "1"
+    title: "Season API"
+    description: "API for generic season details."
+models:
+  - name: "CreateSeasonRequest"
+    description: "Create season request body."
+    contentType: "application/json"
+    schema: ${file(models/requests/create.json)}
+  - name: "UpdateSeasonRequest"
+    description: "Update season request body."
+    contentType: "application/json"
+    schema: ${file(models/requests/update.json)}
+  - name: "CreateSeasonResponse"
+    description: "Create season response body."
+    contentType: "application/json"
+    schema: ${file(models/responses/season.json)}
+  - name: "SeasonResponse"
+    description: "Get specific season response body."
+    contentType: "application/json"
+    schema: ${file(models/responses/season.json)}
+  - name: "SeasonsResponse"
+    description: "List of season(es) response body."
+    contentType: "application/json"
+    schema: ${file(models/responses/seasons.json)}
+  - name: "SuccessResponse"
+    description: "Success message response body."
+    contentType: "application/json"
+    schema: ${file(models/responses/success.json)}
+resources:
+  - path: Create
+    description: "Creates a new season."
+  - path: Get
+    description: "Retrieves a season."
+  - path: Delete
+    description: "Deletes a season."
+  - path: Update
+    description: "Updates a season."

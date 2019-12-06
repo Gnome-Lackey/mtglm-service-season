@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "title": "SeasonsResponseSchema",
+  "items": {
+    "type": "object",
+    "title": "Season",
+    "properties": {
+      "id": {
+        "type": "string",
+        "title": "SeasonId"
+      },
+      "players": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "title": "SeasonPlayerIds"
+        }
+      },
+      "seasons": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "title": "SeasonMatchIds"
+        }
+      },
+      "set": {
+        "type": "string",
+        "title": "SeasonSetId"
+      },
+      "startedOn": {
+        "type": "string",
+        "title": "SeasonDateStarted"
+      },
+      "endedOOn": {
+        "type": "string",
+        "title": "SeasonDateEnded"
+      },
+      "top": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "title": "SeasonTopPlayerIds"
+        }
+      }
+    }
+  }
+}
