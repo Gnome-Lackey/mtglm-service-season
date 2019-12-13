@@ -34,6 +34,20 @@ export const get = async (seasonId: string): Promise<LambdaResponse> => {
   }
 };
 
+export const fetchDetails = async (): Promise<LambdaResponse> => {
+  try {
+    const result = await service.fetchDetails();
+
+    logSuccess("DYNAMO", "Fetch all season details", result);
+
+    return handleSuccess(result);
+  } catch (error) {
+    logFailure("DYNAMO", "Fetch all season details", error);
+
+    return handleError(error);
+  }
+};
+
 export const remove = async (seasonId: string): Promise<LambdaResponse> => {
   try {
     const result = await service.remove(seasonId);
