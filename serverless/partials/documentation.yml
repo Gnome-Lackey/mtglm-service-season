@@ -33,7 +33,7 @@ resources:
     description: "Creates a new season."
   - path: Get
     description: "Retrieves a season."
-  - path: FetchDetails
+  - path: GetAllDetails
     description: "Retrieve all season details."
   - path: Delete
     description: "Deletes a season."

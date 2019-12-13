@@ -41,7 +41,7 @@ custom:
 
 functions:
   Get: ${file(partials/functions/get.yml)}
-  FetchDetails: ${file(partials/functions/fetchDetails.yml)}
+  GetAllDetails: ${file(partials/functions/getAllDetails.yml)}
   Create: ${file(partials/functions/create.yml)}
   Delete: ${file(partials/functions/delete.yml)}
   Update: ${file(partials/functions/update.yml)}

@@ -34,9 +34,9 @@ export const get = async (seasonId: string): Promise<LambdaResponse> => {
   }
 };
 
-export const fetchDetails = async (): Promise<LambdaResponse> => {
+export const getAllDetails = async (): Promise<LambdaResponse> => {
   try {
-    const result = await service.fetchDetails();
+    const result = await service.getAllDetails();
 
     logSuccess("DYNAMO", "Fetch all season details", result);
 

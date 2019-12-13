@@ -1,5 +1,5 @@
-name: ${self:provider.stage}-mtglm-seasons-fetch-details
-handler: build/handlers/fetchDetails.handler
+name: ${self:provider.stage}-mtglm-seasons-get-all-details
+handler: build/handlers/getAllDetails.handler
 tags:
   get: season
 events:
@@ -9,8 +9,8 @@ events:
       authorizer: ${file(partials/common/authorizer.yml)}
       cors: ${file(partials/common/cors.yml)}
       documentation:
-        summary: "GET Season"
-        description: "Get season"
+        summary: "GET all Season details"
+        description: "Get all Season details"
         requestHeaders:
           - name: "Authorization"
             description: "Authorization token is needed to access the endpoint."

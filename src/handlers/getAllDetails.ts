@@ -5,7 +5,7 @@ import { LambdaResponse } from "mtglm-service-sdk/build/models/Lambda";
 import * as controller from "../controllers";
 
 module.exports.handler = requestMiddleware(async (): Promise<LambdaResponse> => {
-  const response = await controller.fetchDetails();
+  const response = await controller.getAllDetails();
 
   return response;
 }, true);

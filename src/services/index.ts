@@ -68,7 +68,7 @@ export const get = async (seasonId: string): Promise<SeasonResponse> => {
   return buildResponse(seasonResult);
 };
 
-export const fetchDetails = async (): Promise<SeasonDetailsResponse[]> => {
+export const getAllDetails = async (): Promise<SeasonDetailsResponse[]> => {
   const seasonResults = await seasonClient.query();
 
   if (!seasonResults.length) {
