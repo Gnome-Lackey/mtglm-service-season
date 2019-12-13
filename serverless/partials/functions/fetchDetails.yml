@@ -22,7 +22,7 @@ events:
 iamRoleStatements:
   - Effect: Allow
     Action:
-      - dynamodb:Query
+      - dynamodb:GetItem
       - dynamodb:Scan
     Resource:
       - Fn::GetAtt: [SeasonsTable, Arn]

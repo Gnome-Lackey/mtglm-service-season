@@ -37,19 +37,18 @@ const buildResponse = (season: AttributeMap): SeasonResponse => {
 const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsResponse> => {
   const seasonNode = seasonMapper.toNode(season);
 
-  const players = (await Promise.all(
-    seasonNode.playerIds.map((id) => playerClient.fetchByKey({ playerId: id }))
-  )) as AttributeMap[];
+  const playerIds = seasonNode.playerIds || [];
+  const playerPromises = playerIds.map((playerId) => playerClient.fetchByKey({ playerId }));
+  const playerResults = await Promise.all(playerPromises);
+  const playerNodes = playerResults.map(playerMapper.toNode);
 
-  const playerNodes = players.map(playerMapper.toNode);
-
-  const set = await requestClient.get(`https://api.scryfall.com/sets/${seasonNode.setCode}`);
+  const setResult = await requestClient.get(`https://api.scryfall.com/sets/${seasonNode.setCode}`);
 
   return {
     ...seasonMapper.toView(seasonNode),
     players: playerNodes.map(playerMapper.toView),
     // TODO: Find out best way to remove any
-    set: scryfallMapper.toSetView(set as any)
+    set: scryfallMapper.toSetView(setResult as any)
   };
 };
 
