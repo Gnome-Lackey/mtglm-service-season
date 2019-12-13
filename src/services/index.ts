@@ -72,6 +72,10 @@ export const get = async (seasonId: string): Promise<SeasonResponse> => {
 export const fetchDetails = async (): Promise<SeasonDetailsResponse[]> => {
   const seasonResults = await seasonClient.query();
 
+  if (!seasonResults.length) {
+    return [];
+  }
+
   const detailedResults = await Promise.all(seasonResults.map(buildDetailResponse));
 
   return detailedResults;
