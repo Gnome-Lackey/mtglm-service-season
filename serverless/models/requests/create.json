@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "CreateSeasonSchema",
-  "required": ["set", "startedOn"],
+  "required": ["set", "startedOn", "isActive"],
   "properties": {
     "players": {
       "type": "array",
@@ -11,16 +11,9 @@
         "title": "SeasonPlayerIds"
       }
     },
-    "matches": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "title": "SeasonMatchIds"
-      }
-    },
     "set": {
       "type": "string",
-      "title": "SeasonSetId"
+      "title": "SeasonSetCode"
     },
     "startedOn": {
       "type": "string",
@@ -33,13 +26,6 @@
     "isActive": {
       "type": "boolean",
       "title": "SeasonIsActive"
-    },
-    "top": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "title": "SeasonTopPlayerIds"
-      }
     }
   }
 }

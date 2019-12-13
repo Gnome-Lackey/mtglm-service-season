@@ -17,20 +17,35 @@
           "title": "SeasonPlayerIds"
         }
       },
-      "matches": {
-        "type": "array",
-        "items": {
-          "type": "string",
-          "title": "SeasonMatchIds"
+      "set": {
+        "type": "object",
+        "title": "SeasonSet",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "SeasonSetId"
+          },
+          "code": {
+            "type": "string",
+            "title": "SeasonSetCode"
+          },
+          "name": {
+            "type": "string",
+            "title": "SeasonSetName"
+          },
+          "releasedOn": {
+            "type": "string",
+            "title": "SeasonSetReleasedOn"
+          },
+          "cardCount": {
+            "type": "string",
+            "title": "SeasonSetCardCount"
+          }
         }
       },
       "isActive": {
         "type": "boolean",
         "title": "SeasonIsActive"
-      },
-      "set": {
-        "type": "string",
-        "title": "SeasonSetId"
       },
       "startedOn": {
         "type": "string",

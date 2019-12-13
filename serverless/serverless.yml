@@ -9,6 +9,8 @@ provider:
   environment:
     ALLOWED_ORIGIN: ${env:ALLOWED_ORIGIN}
     SEASON_TABLE_NAME: ${self:provider.stage}-mtglm-seasons
+    PLAYER_TABLE_NAME:
+      Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableName
     USER_POOL_ID:
       Fn::ImportValue: ${self:provider.stage}-mtglm-UserPoolId
 
@@ -39,6 +41,7 @@ custom:
 
 functions:
   Get: ${file(partials/functions/get.yml)}
+  FetchDetails: ${file(partials/functions/fetchDetails.yml)}
   Create: ${file(partials/functions/create.yml)}
   Delete: ${file(partials/functions/delete.yml)}
   Update: ${file(partials/functions/update.yml)}

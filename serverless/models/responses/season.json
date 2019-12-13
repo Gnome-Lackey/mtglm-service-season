@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "title": "SeasonResponseSchema",
-  "required": ["id", "startedOn", "players", "seasons"],
   "properties": {
     "id": {
       "type": "string",
@@ -15,16 +14,31 @@
         "title": "SeasonPlayerIds"
       }
     },
-    "matches": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "title": "SeasonMatchIds"
-      }
-    },
     "set": {
-      "type": "string",
-      "title": "SeasonSetId"
+      "type": "object",
+      "title": "SeasonSet",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "SeasonSetId"
+        },
+        "code": {
+          "type": "string",
+          "title": "SeasonSetCode"
+        },
+        "name": {
+          "type": "string",
+          "title": "SeasonSetName"
+        },
+        "releasedOn": {
+          "type": "string",
+          "title": "SeasonSetReleasedOn"
+        },
+        "cardCount": {
+          "type": "string",
+          "title": "SeasonSetCardCount"
+        }
+      }
     },
     "isActive": {
       "type": "boolean",
