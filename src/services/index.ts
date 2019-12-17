@@ -44,8 +44,6 @@ const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsR
 
   const setResult = await requestClient.get(`https://api.scryfall.com/sets/${seasonNode.setCode}`);
 
-  console.log(JSON.stringify(setResult));
-
   return {
     ...seasonMapper.toView(seasonNode),
     players: playerNodes.map(playerMapper.toView),
