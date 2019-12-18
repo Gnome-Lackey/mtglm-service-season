@@ -52,14 +52,14 @@ const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsR
   };
 };
 
-export const create = async (data: SeasonCreateRequest): Promise<SeasonResponse> => {
+export const create = async (data: SeasonCreateRequest): Promise<SeasonDetailsResponse> => {
   const seasonItem = seasonMapper.toCreateItem(data);
 
   const { seasonId, startDate } = seasonItem;
 
   const result = await seasonClient.create({ seasonId, startDate }, seasonItem);
 
-  return buildResponse(result);
+  return buildDetailResponse(result);
 };
 
 export const get = async (seasonId: string): Promise<SeasonResponse> => {
@@ -89,10 +89,10 @@ export const remove = async (seasonId: string): Promise<SuccessResponse> => {
 export const update = async (
   seasonId: string,
   data: SeasonUpdateRequest
-): Promise<SeasonResponse> => {
+): Promise<SeasonDetailsResponse> => {
   const seasonItem = seasonMapper.toUpdateItem(data);
 
   const result = await seasonClient.update({ seasonId }, seasonItem);
 
-  return buildResponse(result);
+  return buildDetailResponse(result);
 };
