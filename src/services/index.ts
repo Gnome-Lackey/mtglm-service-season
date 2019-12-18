@@ -90,15 +90,11 @@ export const update = async (
   seasonId: string,
   data: SeasonUpdateRequest
 ): Promise<SeasonDetailsResponse> => {
-  console.log(JSON.stringify(data));
-
   const seasonItem = seasonMapper.toUpdateItem(data);
 
-  console.log(JSON.stringify(seasonItem));
+  await seasonClient.updateList({ seasonId }, "playerIds", seasonItem.playerIds);
 
-  await seasonClient.updateList({ seasonId, startDate: data.startedOn }, "playerIds", seasonItem.playerIds);
-
-  const result = await seasonClient.update({ seasonId, startDate: data.startedOn }, seasonItem);
+  const result = await seasonClient.update({ seasonId }, seasonItem);
 
   return buildDetailResponse(result);
 };
