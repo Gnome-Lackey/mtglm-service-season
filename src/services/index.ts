@@ -37,8 +37,6 @@ const buildResponse = (season: AttributeMap): SeasonResponse => {
 const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsResponse> => {
   const seasonNode = seasonMapper.toNode(season);
 
-  console.log(JSON.stringify(seasonNode));
-
   const playerIds = seasonNode.playerIds || [];
   const playerPromises = playerIds.map((playerId) => playerClient.fetchByKey({ playerId }));
   const playerResults = await Promise.all(playerPromises);
@@ -92,9 +90,13 @@ export const update = async (
   seasonId: string,
   data: SeasonUpdateRequest
 ): Promise<SeasonDetailsResponse> => {
+  console.log(JSON.stringify(data));
+
   const seasonItem = seasonMapper.toUpdateItem(data);
 
-  console.log(seasonId);
+  console.log(JSON.stringify(seasonItem));
+
+  await seasonClient.updateList({ seasonId }, "playerIds", seasonItem.playerIds);
 
   const result = await seasonClient.update({ seasonId, startDate: data.startedOn }, seasonItem);
 

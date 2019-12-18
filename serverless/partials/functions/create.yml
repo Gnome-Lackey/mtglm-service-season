@@ -25,7 +25,12 @@ events:
 iamRoleStatements:
   - Effect: Allow
     Action:
-      - dynamodb:GetItem
       - dynamodb:PutItem
     Resource:
       - Fn::GetAtt: [SeasonsTable, Arn]
+  - Effect: Allow
+    Action:
+      - dynamodb:GetItem
+    Resource:
+      - Fn::GetAtt: [SeasonsTable, Arn]
+      - Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableArn
