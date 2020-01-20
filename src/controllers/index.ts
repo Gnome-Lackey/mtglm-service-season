@@ -53,11 +53,11 @@ export const query = async (queryParams: SeasonQueryParams): Promise<LambdaRespo
   try {
     const result = await service.query(queryParams);
 
-    logSuccess("DYNAMO", "GET all season", result);
+    logSuccess("DYNAMO", "GET all seasons", result);
 
     return handleSuccess(result);
   } catch (error) {
-    logFailure("DYNAMO", "GET all season", error);
+    logFailure("DYNAMO", "GET all seasons", error);
 
     return handleError(error);
   }
