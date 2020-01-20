@@ -80,6 +80,24 @@ export const getAllDetails = async (): Promise<SeasonDetailsResponse[]> => {
   return detailedResults;
 };
 
+export const query = async (queryParams: SeasonQueryParams): Promise<SeasonResponse[]> => {
+  const filters = queryMapper.toSeasonFilters(queryParams);
+
+  const seasonResults = await seasonClient.query(filters);
+
+  return await Promise.all(
+    matchResults.map(async (matchResult) => {
+      const matchRecords = matchResult.playerRecords as string[];
+      const matchId = matchResult.matchId as string;
+      const recordResults = await recordClient.fetchByKeys(
+        matchRecords.map((recordId: string) => ({ recordId, matchId }))
+      );
+
+      return buildResponse(matchResult, recordResults);
+    })
+  );
+};
+
 export const remove = async (seasonId: string): Promise<SuccessResponse> => {
   await seasonClient.remove({ seasonId });
 
