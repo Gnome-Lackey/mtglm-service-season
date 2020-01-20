@@ -37,5 +37,7 @@ resources:
     description: "Retrieve all season details."
   - path: Delete
     description: "Deletes a season."
+  - path: Query
+    description: "Get all seasons by query."
   - path: Update
     description: "Updates a season."

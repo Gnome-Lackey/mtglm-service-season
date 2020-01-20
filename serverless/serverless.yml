@@ -44,4 +44,5 @@ functions:
   GetAllDetails: ${file(partials/functions/getAllDetails.yml)}
   Create: ${file(partials/functions/create.yml)}
   Delete: ${file(partials/functions/delete.yml)}
+  Query: ${file(partials/functions/query.yml)}
   Update: ${file(partials/functions/update.yml)}

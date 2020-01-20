@@ -6,6 +6,7 @@ import * as requestClient from "mtglm-service-sdk/build/clients/request";
 import * as seasonMapper from "mtglm-service-sdk/build/mappers/season";
 import * as playerMapper from "mtglm-service-sdk/build/mappers/player";
 import * as scryfallMapper from "mtglm-service-sdk/build/mappers/scryfall";
+import * as queryMapper from "mtglm-service-sdk/build/mappers/query";
 
 import {
   SuccessResponse,
@@ -13,6 +14,8 @@ import {
   SeasonDetailsResponse
 } from "mtglm-service-sdk/build/models/Responses";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
+import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameters";
+
 
 import {
   PROPERTIES_SEASON,
@@ -80,22 +83,18 @@ export const getAllDetails = async (): Promise<SeasonDetailsResponse[]> => {
   return detailedResults;
 };
 
-export const query = async (queryParams: SeasonQueryParams): Promise<SeasonResponse[]> => {
+export const query = async (queryParams: SeasonQueryParams): Promise<SeasonDetailsResponse[]> => {
   const filters = queryMapper.toSeasonFilters(queryParams);
 
   const seasonResults = await seasonClient.query(filters);
 
-  return await Promise.all(
-    matchResults.map(async (matchResult) => {
-      const matchRecords = matchResult.playerRecords as string[];
-      const matchId = matchResult.matchId as string;
-      const recordResults = await recordClient.fetchByKeys(
-        matchRecords.map((recordId: string) => ({ recordId, matchId }))
-      );
+  if (!seasonResults.length) {
+    return [];
+  }
 
-      return buildResponse(matchResult, recordResults);
-    })
-  );
+  const detailedResults = await Promise.all(seasonResults.map(buildDetailResponse));
+
+  return detailedResults;
 };
 
 export const remove = async (seasonId: string): Promise<SuccessResponse> => {

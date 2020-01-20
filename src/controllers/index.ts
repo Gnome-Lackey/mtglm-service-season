@@ -1,6 +1,7 @@
 import { logFailure, logSuccess } from "mtglm-service-sdk/build/utils/logger";
 import { handleError, handleSuccess } from "mtglm-service-sdk/build/utils/response";
 
+import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameters";
 import { LambdaResponse } from "mtglm-service-sdk/build/models/Lambda";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
 
@@ -43,6 +44,20 @@ export const getAllDetails = async (): Promise<LambdaResponse> => {
     return handleSuccess(result);
   } catch (error) {
     logFailure("DYNAMO", "Fetch all season details", error);
+
+    return handleError(error);
+  }
+};
+
+export const query = async (queryParams: SeasonQueryParams): Promise<LambdaResponse> => {
+  try {
+    const result = await service.query(queryParams);
+
+    logSuccess("DYNAMO", "GET all season", result);
+
+    return handleSuccess(result);
+  } catch (error) {
+    logFailure("DYNAMO", "GET all season", error);
 
     return handleError(error);
   }

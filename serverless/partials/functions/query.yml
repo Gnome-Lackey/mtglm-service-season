@@ -1,0 +1,28 @@
+name: ${self:provider.stage}-mtglm-seasons-query
+handler: build/handlers/query.handler
+tags:
+  query: player
+events:
+  - http:
+      method: get
+      path: seasons
+      authorizer: ${file(partials/common/authorizer.yml)}
+      cors: ${file(partials/common/cors.yml)}
+      documentation:
+        summary: "GET all Seasons"
+        description: "Get all seasons"
+        requestHeaders:
+          - name: "Authorization"
+            description: "Authorization token is needed to access the endpoint."
+        methodResponses:
+          - statusCode: "200"
+            requestModels:
+              "application/json": PlayerResponse
+          - statusCode: "500"
+iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:Scan
+      - dynamodb:Query
+    Resource:
+      - Fn::GetAtt: [SeasonsTable, Arn]
