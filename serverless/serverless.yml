@@ -40,8 +40,9 @@ custom:
     Fn::ImportValue: ${self:provider.stage}-mtglm-UserPoolName
 
 functions:
-  Get: ${file(partials/functions/get.yml)}
-  GetAllDetails: ${file(partials/functions/getAllDetails.yml)}
+  GetAllDetails: ${file(partials/functions/detailsQuery.yml)}
+  GetDetails: ${file(partials/functions/detailsGet.yml)}
+  GetCurrentDetails: ${file(partials/functions/detailsGetCurrent.yml)}
   Create: ${file(partials/functions/create.yml)}
   Delete: ${file(partials/functions/delete.yml)}
   Query: ${file(partials/functions/query.yml)}

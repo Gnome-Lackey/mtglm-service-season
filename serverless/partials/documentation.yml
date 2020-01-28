@@ -19,7 +19,13 @@ models:
   - name: "SeasonResponse"
     description: "Get specific season response body."
     contentType: "application/json"
+  - name: "SeasonDetailResponse"
+    description: "Get specific detailed season response body."
+    contentType: "application/json"
     schema: ${file(models/responses/season.json)}
+  - name: "SeasonsDetailResponse"
+    description: "List of detailed season(es) response body."
+    contentType: "application/json"
   - name: "SeasonsResponse"
     description: "List of season(es) response body."
     contentType: "application/json"
