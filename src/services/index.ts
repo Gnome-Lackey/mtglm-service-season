@@ -51,9 +51,13 @@ export const create = async (data: SeasonCreateRequest): Promise<SeasonDetailsRe
 };
 
 export const get = async (seasonId: string): Promise<SeasonDetailsResponse> => {
-  const seasonResult = await seasonClient.fetchByKey({ seasonId });
+  const seasonResults = await seasonClient.query({ seasonId });
 
-  return buildDetailResponse(seasonResult);
+  if (!seasonResults.length) {
+    return null;
+  }
+
+  return buildDetailResponse(seasonResults[0]);
 };
 
 export const getRecent = async (): Promise<SeasonDetailsResponse> => {
