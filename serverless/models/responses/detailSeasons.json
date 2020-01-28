@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "title": "SeasonsDetailResponseSchema",
+  "items": {
+    "type": "object",
+    "title": "Season",
+    "properties": {
+      "id": {
+        "type": "string",
+        "title": "SeasonId"
+      },
+      "players": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "PlayerId"
+            },
+            "name": {
+              "type": "string",
+              "title": "PlayerName"
+            },
+            "userName": {
+              "type": "string",
+              "title": "PlayerUserName"
+            },
+            "email": {
+              "type": "string",
+              "title": "PlayerEmail"
+            },
+            "totalWins": {
+              "type": "integer",
+              "title": "PlayerTotalWins"
+            },
+            "totalLosses": {
+              "type": "integer",
+              "title": "PlayerTotalLosses"
+            },
+            "epithet": {
+              "type": "string",
+              "title": "PlayerEpithet"
+            },
+            "favoriteColors": {
+              "type": "array",
+              "title": "PlayerFavoriteColors",
+              "items": {
+                "type": "string"
+              }
+            },
+            "matches": {
+              "type": "array",
+              "title": "PlayerMatchIds",
+              "items": {
+                "type": "string",
+                "title": "PlayerMatchId"
+              }
+            }
+          }
+        }
+      },
+      "set": {
+        "type": "object",
+        "title": "SeasonSet",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "SeasonSetId"
+          },
+          "code": {
+            "type": "string",
+            "title": "SeasonSetCode"
+          },
+          "name": {
+            "type": "string",
+            "title": "SeasonSetName"
+          },
+          "releasedOn": {
+            "type": "string",
+            "title": "SeasonSetReleasedOn"
+          },
+          "cardCount": {
+            "type": "string",
+            "title": "SeasonSetCardCount"
+          }
+        }
+      },
+      "isActive": {
+        "type": "boolean",
+        "title": "SeasonIsActive"
+      },
+      "startedOn": {
+        "type": "string",
+        "title": "SeasonDateStarted"
+      },
+      "endedOOn": {
+        "type": "string",
+        "title": "SeasonDateEnded"
+      },
+      "top": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "title": "SeasonTopPlayerIds"
+        }
+      }
+    }
+  }
+}
