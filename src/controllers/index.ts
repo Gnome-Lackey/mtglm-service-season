@@ -21,9 +21,9 @@ export const create = async (data: SeasonCreateRequest): Promise<LambdaResponse>
   }
 };
 
-export const get = async (seasonId: string): Promise<LambdaResponse> => {
+export const current = async (): Promise<LambdaResponse> => {
   try {
-    const result = await service.get(seasonId);
+    const result = await service.getRecent();
 
     logSuccess("DYNAMO", "GET season", result);
 
@@ -35,15 +35,15 @@ export const get = async (seasonId: string): Promise<LambdaResponse> => {
   }
 };
 
-export const getAllDetails = async (): Promise<LambdaResponse> => {
+export const get = async (seasonId: string): Promise<LambdaResponse> => {
   try {
-    const result = await service.getAllDetails();
+    const result = await service.get(seasonId);
 
-    logSuccess("DYNAMO", "Fetch all season details", result);
+    logSuccess("DYNAMO", "GET season", result);
 
     return handleSuccess(result);
   } catch (error) {
-    logFailure("DYNAMO", "Fetch all season details", error);
+    logFailure("DYNAMO", "GET season", error);
 
     return handleError(error);
   }

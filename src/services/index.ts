@@ -8,14 +8,9 @@ import * as playerMapper from "mtglm-service-sdk/build/mappers/player";
 import * as scryfallMapper from "mtglm-service-sdk/build/mappers/scryfall";
 import * as queryMapper from "mtglm-service-sdk/build/mappers/query";
 
-import {
-  SuccessResponse,
-  SeasonResponse,
-  SeasonDetailsResponse
-} from "mtglm-service-sdk/build/models/Responses";
+import { SuccessResponse, SeasonDetailsResponse } from "mtglm-service-sdk/build/models/Responses";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
 import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameters";
-
 
 import {
   PROPERTIES_SEASON,
@@ -26,16 +21,6 @@ const { PLAYER_TABLE_NAME, SEASON_TABLE_NAME } = process.env;
 
 const seasonClient = new MTGLMDynamoClient(SEASON_TABLE_NAME, PROPERTIES_SEASON);
 const playerClient = new MTGLMDynamoClient(PLAYER_TABLE_NAME, PROPERTIES_PLAYER);
-
-const buildResponse = (season: AttributeMap): SeasonResponse => {
-  const seasonNode = seasonMapper.toNode(season);
-
-  return {
-    ...seasonMapper.toView(seasonNode),
-    set: seasonNode.setCode,
-    players: seasonNode.playerIds
-  };
-};
 
 const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsResponse> => {
   const seasonNode = seasonMapper.toNode(season);
@@ -65,22 +50,29 @@ export const create = async (data: SeasonCreateRequest): Promise<SeasonDetailsRe
   return buildDetailResponse(result);
 };
 
-export const get = async (seasonId: string): Promise<SeasonResponse> => {
+export const get = async (seasonId: string): Promise<SeasonDetailsResponse> => {
   const seasonResult = await seasonClient.fetchByKey({ seasonId });
 
-  return buildResponse(seasonResult);
+  return buildDetailResponse(seasonResult);
 };
 
-export const getAllDetails = async (): Promise<SeasonDetailsResponse[]> => {
-  const seasonResults = await seasonClient.query();
+export const getRecent = async (): Promise<SeasonDetailsResponse> => {
+  const seasonResults = await seasonClient.query({
+    isActive: true
+  });
 
   if (!seasonResults.length) {
-    return [];
+    return null;
   }
 
-  const detailedResults = await Promise.all(seasonResults.map(buildDetailResponse));
+  const seasonResult = seasonResults.reduce((currentSeason, nextSeason) => {
+    const currentSeasonEpoch = new Date(currentSeason.startDate as string).getTime();
+    const nextSeasonEpoch = new Date(nextSeason.startDate as string).getTime();
 
-  return detailedResults;
+    return currentSeasonEpoch < nextSeasonEpoch ? nextSeason : currentSeason;
+  }, seasonResults[0]);
+
+  return buildDetailResponse(seasonResult);
 };
 
 export const query = async (queryParams: SeasonQueryParams): Promise<SeasonDetailsResponse[]> => {
