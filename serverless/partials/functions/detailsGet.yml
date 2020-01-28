@@ -5,7 +5,7 @@ tags:
 events:
   - http:
       method: get
-      path: seasons/{seasonId}/details
+      path: seasons/details/{seasonId}
       authorizer: ${file(partials/common/authorizer.yml)}
       cors: ${file(partials/common/cors.yml)}
       documentation:
