@@ -1,4 +1,4 @@
-name: ${self:provider.stage}-mtglm-seasons-get
+name: ${self:provider.stage}-mtglm-seasons-get-current-details
 handler: build/handlers/detailsGetCurrent.handler
 tags:
   get: season
