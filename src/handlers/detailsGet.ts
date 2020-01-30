@@ -5,12 +5,12 @@ import { SeasonPathParameters } from "mtglm-service-sdk/build/models/PathParamet
 
 import * as controller from "../controllers";
 
-module.exports.handler = requestMiddleware(async (path: SeasonPathParameters): Promise<
-  LambdaResponse
-> => {
-  const { seasonId } = path;
+module.exports.handler = requestMiddleware(
+  async (path: SeasonPathParameters): Promise<LambdaResponse> => {
+    const { seasonId } = path;
 
-  const response = await controller.get(seasonId);
+    const response = await controller.get(seasonId);
 
-  return response;
-}, true);
+    return response;
+  }
+);

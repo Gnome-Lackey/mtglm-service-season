@@ -4,8 +4,10 @@ import { LambdaResponse } from "mtglm-service-sdk/build/models/Lambda";
 
 import * as controller from "../controllers";
 
-module.exports.handler = requestMiddleware(async (): Promise<LambdaResponse> => {
-  const response = await controller.current();
+module.exports.handler = requestMiddleware(
+  async (): Promise<LambdaResponse> => {
+    const response = await controller.current();
 
-  return response;
-}, true);
+    return response;
+  }
+);
