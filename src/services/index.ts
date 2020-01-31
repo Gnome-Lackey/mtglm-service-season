@@ -25,12 +25,18 @@ const playerClient = new MTGLMDynamoClient(PLAYER_TABLE_NAME, PROPERTIES_PLAYER)
 const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsResponse> => {
   const seasonNode = seasonMapper.toNode(season);
 
+  console.log(JSON.stringify(seasonNode));
+
   const playerIds = seasonNode.playerIds || [];
   const playerPromises = playerIds.map((playerId) => playerClient.fetchByKey({ playerId }));
   const playerResults = await Promise.all(playerPromises);
   const playerNodes = playerResults.map(playerMapper.toNode);
 
+  console.log(JSON.stringify(playerNodes));
+
   const setResult = await requestClient.get(`https://api.scryfall.com/sets/${seasonNode.setCode}`);
+
+  console.log(JSON.stringify(setResult));
 
   return {
     ...seasonMapper.toView(seasonNode),
