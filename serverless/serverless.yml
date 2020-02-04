@@ -8,7 +8,8 @@ provider:
   memorySize: 128
   environment:
     ALLOWED_ORIGIN: ${env:ALLOWED_ORIGIN}
-    SEASON_TABLE_NAME: ${self:provider.stage}-mtglm-seasons
+    SEASON_TABLE_NAME:
+      Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonTableName
     PLAYER_TABLE_NAME:
       Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableName
     USER_POOL_ID:
