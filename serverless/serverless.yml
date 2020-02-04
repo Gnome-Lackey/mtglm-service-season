@@ -35,9 +35,9 @@ custom:
   userPoolName:
     Fn::ImportValue: ${self:provider.stage}-mtglm-UserPoolName
   playerTableArn:
-    Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableArn
+    Fn::ImportValue: ${self:provider.stage}-mtglm-playerTableArn
   seasonTableArn:
-    Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonTableArn
+    Fn::ImportValue: ${self:provider.stage}-mtglm-seasonTableArn
 
 functions:
   Create: ${file(partials/functions/create.yml)}
