@@ -25,5 +25,6 @@ iamRoleStatements:
       - dynamodb:GetItem
       - dynamodb:QueryItem
       - dynamodb:Scan
-    Resource: ${self:custom.seasonTableArn}
+    Resource: 
+      - {self:custom.seasonTableArn}
       - ${self:custom.playerTableArn}
