@@ -27,5 +27,4 @@ iamRoleStatements:
   - Effect: Allow
     Action:
       - dynamodb:DeleteItem
-    Resource:
-      - Fn::GetAtt: [SeasonsTable, Arn]
+    Resource: ${self:custom.seasonTableArn}
