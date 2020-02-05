@@ -26,11 +26,10 @@ iamRoleStatements:
   - Effect: Allow
     Action:
       - dynamodb:PutItem
-    Resource:
-      - Fn::GetAtt: [SeasonsTable, Arn]
+    Resource: ${self:custom.seasonTableArn}
   - Effect: Allow
     Action:
       - dynamodb:GetItem
-    Resource:
-      - Fn::GetAtt: [SeasonsTable, Arn]
-      - Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableArn
+    Resource: 
+      - ${self:custom.seasonTableArn}
+      - ${self:custom.playerTableArn}
