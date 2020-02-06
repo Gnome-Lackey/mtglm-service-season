@@ -8,6 +8,8 @@ import * as playerMapper from "mtglm-service-sdk/build/mappers/player";
 import * as scryfallMapper from "mtglm-service-sdk/build/mappers/scryfall";
 import * as queryMapper from "mtglm-service-sdk/build/mappers/query";
 
+import * as standingsUtil from "mtglm-service-sdk/build/utils/standings";
+
 import { SuccessResponse, SeasonDetailsResponse } from "mtglm-service-sdk/build/models/Responses";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
 import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameters";
@@ -29,12 +31,13 @@ const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsR
   const playerPromises = playerIds.map((playerId) => playerClient.fetchByKey({ playerId }));
   const playerResults = await Promise.all(playerPromises);
   const playerNodes = playerResults.map(playerMapper.toNode);
+  const sortedPlayerNodes = standingsUtil.sort(playerNodes);
 
   const setResult = await requestClient.get(`https://api.scryfall.com/sets/${seasonNode.setCode}`);
 
   return {
     ...seasonMapper.toView(seasonNode),
-    players: playerNodes.map(playerMapper.toView),
+    players: sortedPlayerNodes.map(playerMapper.toView),
     // TODO: Find out best way to remove any
     set: scryfallMapper.toSetView(setResult as any)
   };
