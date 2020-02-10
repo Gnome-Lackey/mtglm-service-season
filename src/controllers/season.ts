@@ -5,7 +5,7 @@ import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameter
 import { LambdaResponse } from "mtglm-service-sdk/build/models/Lambda";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
 
-import * as service from "../services";
+import * as service from "../services/season";
 
 export const create = async (data: SeasonCreateRequest): Promise<LambdaResponse> => {
   try {
@@ -44,34 +44,6 @@ export const get = async (seasonId: string): Promise<LambdaResponse> => {
     return handleSuccess(result);
   } catch (error) {
     logFailure("DYNAMO", "GET season", error);
-
-    return handleError(error);
-  }
-};
-
-export const getSeasonMetadata = async (seasonId: string): Promise<LambdaResponse> => {
-  try {
-    const result = await service.getSeasonMetadata(seasonId);
-
-    logSuccess("DYNAMO", "GET season metadata", result);
-
-    return handleSuccess(result);
-  } catch (error) {
-    logFailure("DYNAMO", "GET season metadata", error);
-
-    return handleError(error);
-  }
-};
-
-export const getSeasonMetadataForPlayer = async (seasonId: string, playerId: string): Promise<LambdaResponse> => {
-  try {
-    const result = await service.getSeasonMetadataForPlayer(seasonId, playerId);
-
-    logSuccess("DYNAMO", "GET player season metadata", result);
-
-    return handleSuccess(result);
-  } catch (error) {
-    logFailure("DYNAMO", "GET player season metadata", error);
 
     return handleError(error);
   }

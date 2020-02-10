@@ -4,7 +4,7 @@ import { LambdaResponse } from "mtglm-service-sdk/build/models/Lambda";
 import { SeasonPathParameters } from "mtglm-service-sdk/build/models/PathParameters";
 import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameters";
 
-import * as controller from "../controllers";
+import * as controller from "../controllers/season";
 
 module.exports.handler = requestMiddleware(
   async (
