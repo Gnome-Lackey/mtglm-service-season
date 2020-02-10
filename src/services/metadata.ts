@@ -8,10 +8,10 @@ import { SeasonMetadataResponse, SuccessResponse } from "mtglm-service-sdk/build
 
 import { PROPERTIES_SEASON_METADATA } from "mtglm-service-sdk/build/constants/mutable_properties";
 
-const { SEASON_METADATA_TABLE } = process.env;
+const { SEASON_METADATA_TABLE_NAME } = process.env;
 
 const seasonMetadataClient = new MTGLMDynamoClient(
-  SEASON_METADATA_TABLE,
+  SEASON_METADATA_TABLE_NAME,
   PROPERTIES_SEASON_METADATA
 );
 
