@@ -65,11 +65,11 @@ const createMetadata = async (
 export const create = async (data: SeasonCreateRequest): Promise<SeasonDetailsResponse> => {
   const seasonItem = seasonMapper.toCreateItem(data);
 
-  const { seasonId, startDate, playerIds } = seasonItem;
+  const { seasonId, playerIds } = seasonItem;
 
   await createMetadata(seasonId, playerIds);
 
-  const result = await seasonClient.create({ seasonId, startDate }, seasonItem);
+  const result = await seasonClient.create({ seasonId }, seasonItem);
 
   return buildDetailResponse(result);
 };
@@ -85,9 +85,7 @@ export const get = async (seasonId: string): Promise<SeasonDetailsResponse> => {
 };
 
 export const getRecent = async (): Promise<SeasonDetailsResponse> => {
-  const seasonResults = await seasonClient.query({
-    isActive: true
-  });
+  const seasonResults = await seasonClient.query({ isActive: true });
 
   if (!seasonResults.length) {
     return null;
@@ -129,13 +127,11 @@ export const update = async (
   seasonId: string,
   data: SeasonUpdateRequest
 ): Promise<SeasonDetailsResponse> => {
-  const key = { seasonId, startDate: data.startedOn };
-
   const seasonItem = seasonMapper.toUpdateItem(data);
   
   await createMetadata(seasonId, data.players);
 
-  const result = await seasonClient.update(key, seasonItem);
+  const result = await seasonClient.update({ seasonId }, seasonItem);
 
   return buildDetailResponse(result);
 };
