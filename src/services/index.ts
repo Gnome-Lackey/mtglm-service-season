@@ -10,19 +10,28 @@ import * as queryMapper from "mtglm-service-sdk/build/mappers/query";
 
 import * as standingsUtil from "mtglm-service-sdk/build/utils/standings";
 
-import { SuccessResponse, SeasonDetailsResponse } from "mtglm-service-sdk/build/models/Responses";
+import {
+  SuccessResponse,
+  SeasonDetailsResponse,
+  SeasonMetadataResponse
+} from "mtglm-service-sdk/build/models/Responses";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
 import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameters";
 
 import {
+  PROPERTIES_SEASON_METADATA,
   PROPERTIES_SEASON,
   PROPERTIES_PLAYER
 } from "mtglm-service-sdk/build/constants/mutable_properties";
 
-const { PLAYER_TABLE_NAME, SEASON_TABLE_NAME } = process.env;
+const { PLAYER_TABLE_NAME, SEASON_TABLE_NAME, SEASON_METADATA_TABLE } = process.env;
 
-const seasonClient = new MTGLMDynamoClient(SEASON_TABLE_NAME, PROPERTIES_SEASON);
 const playerClient = new MTGLMDynamoClient(PLAYER_TABLE_NAME, PROPERTIES_PLAYER);
+const seasonClient = new MTGLMDynamoClient(SEASON_TABLE_NAME, PROPERTIES_SEASON);
+const seasonMetadataClient = new MTGLMDynamoClient(
+  SEASON_METADATA_TABLE,
+  PROPERTIES_SEASON_METADATA
+);
 
 const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsResponse> => {
   const seasonNode = seasonMapper.toNode(season);
@@ -40,6 +49,21 @@ const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsR
     players: sortedPlayerNodes.map(playerMapper.toView),
     // TODO: Find out best way to remove any
     set: scryfallMapper.toSetView(setResult as any)
+  };
+};
+
+const buildSeasonMetadataResponse = async (
+  result: AttributeMap
+): Promise<SeasonMetadataResponse> => {
+  const node = seasonMapper.toMetadataNode(result);
+  const view = seasonMapper.toMetadataView(node);
+
+  return {
+    ...view,
+    player: node.playerId,
+    season: node.seasonId,
+    matches: node.matchIds,
+    playedOpponents: node.playedOpponentIds
   };
 };
 
@@ -80,6 +104,31 @@ export const getRecent = async (): Promise<SeasonDetailsResponse> => {
   }, seasonResults[0]);
 
   return buildDetailResponse(seasonResult);
+};
+
+export const getSeasonMetadata = async (seasonId: string): Promise<SeasonMetadataResponse[]> => {
+  const seasonMetadataResults = await seasonMetadataClient.query({ seasonId });
+
+  if (!seasonMetadataResults.length) {
+    throw new Error("Error getting metadata. Invalid season id supplied.");
+  }
+
+  return await Promise.all(seasonMetadataResults.map(buildSeasonMetadataResponse));
+};
+
+export const getSeasonMetadataForPlayer = async (
+  seasonId: string,
+  playerId: string
+): Promise<SeasonMetadataResponse> => {
+  const seasonPlayerMetadataResults = await seasonMetadataClient.query({ seasonId, playerId });
+
+  if (!seasonPlayerMetadataResults.length) {
+    throw new Error("Error getting metadata. Invalid player or season id supplied.");
+  }
+
+  const seasonMetadata = seasonPlayerMetadataResults[0];
+
+  return await buildSeasonMetadataResponse(seasonMetadata);
 };
 
 export const query = async (queryParams: SeasonQueryParams): Promise<SeasonDetailsResponse[]> => {
