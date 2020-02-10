@@ -28,3 +28,8 @@ iamRoleStatements:
     Action:
       - dynamodb:DeleteItem
     Resource: ${self:custom.seasonTableArn}
+  - Effect: Allow
+    Action:
+      - dynamodb:QueryItem
+      - dynamodb:DeleteItem
+    Resource: ${self:custom.SeasonMetadataTableArn}

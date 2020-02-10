@@ -33,3 +33,8 @@ iamRoleStatements:
     Resource: 
       - ${self:custom.seasonTableArn}
       - ${self:custom.playerTableArn}
+  - Effect: Allow
+    Action:
+      - dynamodb:PutItem
+    Resource: 
+      - ${self:custom.SeasonMetadataTableArn}

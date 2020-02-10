@@ -30,6 +30,14 @@ models:
     description: "List of season(es) response body."
     contentType: "application/json"
     schema: ${file(models/responses/seasons.json)}
+  - name: "SeasonMetadataResponse"
+    description: "Get season metadata."
+    contentType: "application/json"
+    schema: ${file(models/responses/seasonMetadata.json)}
+  - name: "SeasonPlayerMetadataResponse"
+    description: "Get season metadata for a given player response body."
+    contentType: "application/json"
+    schema: ${file(models/responses/seasonPlayerMetadata.json)}
   - name: "SuccessResponse"
     description: "Success message response body."
     contentType: "application/json"
@@ -41,6 +49,10 @@ resources:
     description: "Retrieves a season."
   - path: GetAllDetails
     description: "Retrieve all season details."
+  - path: GetSeasonMetadata
+    description: "Retrieves season metadata."
+  - path: GetSeasonPlayerMetadata
+    description: "Retrieves season metadata for a given player."
   - path: Delete
     description: "Deletes a season."
   - path: Query

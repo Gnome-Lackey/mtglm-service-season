@@ -12,6 +12,8 @@ provider:
       Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonTableName
     PLAYER_TABLE_NAME:
       Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableName
+    SEASON_METADATA_TABLE_NAME:
+      Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonMetadataTableName
     USER_POOL_ID:
       Fn::ImportValue: ${self:provider.stage}-mtglm-UserPoolId
 
@@ -39,10 +41,14 @@ custom:
     Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableArn
   seasonTableArn:
     Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonTableArn
+  SeasonMetadataTableArn:
+    Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonMetadataTableArn
 
 functions:
   Create: ${file(partials/functions/create.yml)}
   Delete: ${file(partials/functions/delete.yml)}
+  GetSeasonMetadata: ${file(partials/functions/getSeasonMetadata.yml)}
+  getSeasonPlayerMetadata: ${file(partials/functions/getSeasonPlayerMetadata.yml)}
   GetCurrentDetails: ${file(partials/functions/detailsGetCurrent.yml)}
   GetDetails: ${file(partials/functions/detailsGet.yml)}
   QueryDetails: ${file(partials/functions/detailsQuery.yml)}
