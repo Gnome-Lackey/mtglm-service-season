@@ -12,6 +12,8 @@ provider:
       Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonTableName
     PLAYER_TABLE_NAME:
       Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableName
+    MATCH_TABLE_NAME:
+      Fn::ImportValue: ${self:provider.stage}-mtglm-MatchTableName
     SEASON_METADATA_TABLE_NAME:
       Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonMetadataTableName
     USER_POOL_ID:
@@ -41,8 +43,10 @@ custom:
     Fn::ImportValue: ${self:provider.stage}-mtglm-PlayerTableArn
   seasonTableArn:
     Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonTableArn
-  SeasonMetadataTableArn:
+  seasonMetadataTableArn:
     Fn::ImportValue: ${self:provider.stage}-mtglm-SeasonMetadataTableArn
+  matchTableArn:
+    Fn::ImportValue: ${self:provider.stage}-mtglm-MatchTableArn
 
 functions:
   Create: ${file(partials/functions/create.yml)}

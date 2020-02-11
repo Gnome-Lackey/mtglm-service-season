@@ -32,4 +32,4 @@ iamRoleStatements:
     Action:
       - dynamodb:QueryItem
       - dynamodb:DeleteItem
-    Resource: ${self:custom.SeasonMetadataTableArn}
+    Resource: ${self:custom.seasonMetadataTableArn}

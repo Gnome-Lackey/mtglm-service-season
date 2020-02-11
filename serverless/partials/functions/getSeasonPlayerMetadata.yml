@@ -24,4 +24,9 @@ iamRoleStatements:
     Action:
       - dynamodb:Query
     Resource: 
-      - ${self:custom.SeasonMetadataTableArn}
+      - ${self:custom.seasonMetadataTableArn}
+  - Effect: Allow
+    Action:
+      - dynamodb:BatchGet
+    Resource: 
+      - ${self:custom.matchTableArn}

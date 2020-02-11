@@ -41,4 +41,4 @@ iamRoleStatements:
     Action:
       - dynamodb:GetItem
       - dynamodb:PutItem
-    Resource: ${self:custom.SeasonMetadataTableArn}
+    Resource: ${self:custom.seasonMetadataTableArn}
