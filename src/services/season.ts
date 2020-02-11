@@ -14,8 +14,8 @@ import * as standingsUtil from "mtglm-service-sdk/build/utils/standings";
 
 import {
   SuccessResponse,
-  SeasonDetailsResponse,
-  SeasonMetadataResponse
+  SeasonMetadataResponse,
+  SeasonResponse
 } from "mtglm-service-sdk/build/models/Responses";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
 import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameters";
@@ -30,7 +30,7 @@ const { PLAYER_TABLE_NAME, SEASON_TABLE_NAME } = process.env;
 const playerClient = new MTGLMDynamoClient(PLAYER_TABLE_NAME, PROPERTIES_PLAYER);
 const seasonClient = new MTGLMDynamoClient(SEASON_TABLE_NAME, PROPERTIES_SEASON);
 
-const buildDetailResponse = async (season: AttributeMap): Promise<SeasonDetailsResponse> => {
+const buildDetailResponse = async (season: AttributeMap): Promise<SeasonResponse> => {
   const seasonNode = seasonMapper.toNode(season);
 
   const playerIds = seasonNode.playerIds || [];
@@ -62,7 +62,7 @@ const createMetadata = async (
   }
 };
 
-export const create = async (data: SeasonCreateRequest): Promise<SeasonDetailsResponse> => {
+export const create = async (data: SeasonCreateRequest): Promise<SeasonResponse> => {
   const seasonItem = seasonMapper.toCreateItem(data);
 
   const { seasonId, playerIds } = seasonItem;
@@ -74,7 +74,7 @@ export const create = async (data: SeasonCreateRequest): Promise<SeasonDetailsRe
   return buildDetailResponse(result);
 };
 
-export const get = async (seasonId: string): Promise<SeasonDetailsResponse> => {
+export const get = async (seasonId: string): Promise<SeasonResponse> => {
   const seasonResults = await seasonClient.query({ seasonId });
 
   if (!seasonResults.length) {
@@ -84,7 +84,7 @@ export const get = async (seasonId: string): Promise<SeasonDetailsResponse> => {
   return buildDetailResponse(seasonResults[0]);
 };
 
-export const getRecent = async (): Promise<SeasonDetailsResponse> => {
+export const getRecent = async (): Promise<SeasonResponse> => {
   const seasonResults = await seasonClient.query({ isActive: true });
 
   if (!seasonResults.length) {
@@ -101,7 +101,7 @@ export const getRecent = async (): Promise<SeasonDetailsResponse> => {
   return buildDetailResponse(seasonResult);
 };
 
-export const query = async (queryParams: SeasonQueryParams): Promise<SeasonDetailsResponse[]> => {
+export const query = async (queryParams: SeasonQueryParams): Promise<SeasonResponse[]> => {
   const filters = queryMapper.toSeasonFilters(queryParams);
 
   const seasonResults = await seasonClient.query(filters);
@@ -126,9 +126,9 @@ export const remove = async (seasonId: string): Promise<SuccessResponse> => {
 export const update = async (
   seasonId: string,
   data: SeasonUpdateRequest
-): Promise<SeasonDetailsResponse> => {
+): Promise<SeasonResponse> => {
   const seasonItem = seasonMapper.toUpdateItem(data);
-  
+
   await createMetadata(seasonId, data.players);
 
   const result = await seasonClient.update({ seasonId }, seasonItem);

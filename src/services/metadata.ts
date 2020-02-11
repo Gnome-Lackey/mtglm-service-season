@@ -2,18 +2,24 @@ import { AttributeMap } from "aws-sdk/clients/dynamodb";
 
 import { MTGLMDynamoClient } from "mtglm-service-sdk/build/clients/dynamo";
 
+import * as matchMapper from "mtglm-service-sdk/build/mappers/match";
 import * as seasonMapper from "mtglm-service-sdk/build/mappers/season";
 
 import { SeasonMetadataResponse, SuccessResponse } from "mtglm-service-sdk/build/models/Responses";
 
-import { PROPERTIES_SEASON_METADATA } from "mtglm-service-sdk/build/constants/mutable_properties";
+import {
+  PROPERTIES_SEASON_METADATA,
+  PROPERTIES_MATCH
+} from "mtglm-service-sdk/build/constants/mutable_properties";
 
-const { SEASON_METADATA_TABLE_NAME } = process.env;
+const { SEASON_METADATA_TABLE_NAME, MATCH_TABLE_NAME } = process.env;
 
 const seasonMetadataClient = new MTGLMDynamoClient(
   SEASON_METADATA_TABLE_NAME,
   PROPERTIES_SEASON_METADATA
 );
+
+const matchClient = new MTGLMDynamoClient(MATCH_TABLE_NAME, PROPERTIES_MATCH);
 
 const buildSeasonMetadataResponse = async (
   result: AttributeMap
@@ -21,11 +27,15 @@ const buildSeasonMetadataResponse = async (
   const node = seasonMapper.toMetadataNode(result);
   const view = seasonMapper.toMetadataView(node);
 
+  const matchResults = await matchClient.fetchByKeys(node.matchIds.map((id) => ({ matchId: id })));
+  const matchNodes = matchResults.map(matchMapper.toNode);
+  const matchViews = matchNodes.map(matchMapper.toView);
+
   return {
     ...view,
     player: node.playerId,
     season: node.seasonId,
-    matches: node.matchIds,
+    matches: matchViews,
     playedOpponents: node.playedOpponentIds
   };
 };
