@@ -42,10 +42,9 @@ const buildSeasonMetadataResponse = async (
 
 export const create = async (
   seasonId: string,
-  playerId: string,
-  players: string[]
+  playerId: string
 ): Promise<SeasonMetadataResponse> => {
-  const seasonMetadataItem = seasonMapper.toMetadataCreateItem(seasonId, playerId, players);
+  const seasonMetadataItem = seasonMapper.toMetadataCreateItem(seasonId, playerId);
 
   const result = await seasonMetadataClient.create({ seasonId, playerId }, seasonMetadataItem);
 

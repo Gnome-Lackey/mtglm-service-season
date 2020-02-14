@@ -55,7 +55,7 @@ const createMetadata = async (
 ): Promise<SeasonMetadataResponse[]> => {
   try {
     return await Promise.all(
-      playerIds.map((playerId) => metadataService.create(seasonId, playerId, playerIds))
+      playerIds.map((playerId) => metadataService.create(seasonId, playerId))
     );
   } catch (e) {
     console.log(e);
