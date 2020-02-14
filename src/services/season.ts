@@ -12,11 +12,7 @@ import * as queryMapper from "mtglm-service-sdk/build/mappers/query";
 
 import * as standingsUtil from "mtglm-service-sdk/build/utils/standings";
 
-import {
-  SuccessResponse,
-  SeasonMetadataResponse,
-  SeasonResponse
-} from "mtglm-service-sdk/build/models/Responses";
+import { SuccessResponse, SeasonResponse } from "mtglm-service-sdk/build/models/Responses";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
 import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameters";
 
@@ -49,25 +45,12 @@ const buildDetailResponse = async (season: AttributeMap): Promise<SeasonResponse
   };
 };
 
-const createMetadata = async (
-  seasonId: string,
-  playerIds: string[]
-): Promise<SeasonMetadataResponse[]> => {
-  try {
-    return await Promise.all(
-      playerIds.map((playerId) => metadataService.create(seasonId, playerId))
-    );
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 export const create = async (data: SeasonCreateRequest): Promise<SeasonResponse> => {
   const seasonItem = seasonMapper.toCreateItem(data);
 
   const { seasonId, playerIds } = seasonItem;
 
-  await createMetadata(seasonId, playerIds);
+  await metadataService.createAll(seasonId, playerIds);
 
   const result = await seasonClient.create({ seasonId }, seasonItem);
 
@@ -129,7 +112,7 @@ export const update = async (
 ): Promise<SeasonResponse> => {
   const seasonItem = seasonMapper.toUpdateItem(data);
 
-  await createMetadata(seasonId, data.players);
+  await metadataService.createAll(seasonId, data.players);
 
   const result = await seasonClient.update({ seasonId }, seasonItem);
 

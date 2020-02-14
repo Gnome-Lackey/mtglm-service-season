@@ -40,25 +40,31 @@ const buildSeasonMetadataResponse = async (
   };
 };
 
-export const create = async (
+export const createAll = async (
   seasonId: string,
-  playerId: string
-): Promise<SeasonMetadataResponse> => {
-  const key = { seasonId, playerId };
+  playerIds: string[]
+): Promise<SeasonMetadataResponse[]> => {
+  const seasonMetadataResults = await seasonMetadataClient.query({ seasonId });
 
-  const seasonMetadataResult = await seasonMetadataClient.fetchByKey(key);
-
-  if (seasonMetadataResult) {
-    console.log(`Season metadata already exists for season ${seasonId} and ${playerId}, skipping`);
-
-    return buildSeasonMetadataResponse(seasonMetadataResult);
+  if (!seasonMetadataResults.length) {
+    throw new Error("Error getting metadata. Invalid season id supplied.");
   }
 
-  const seasonMetadataCreateItem = seasonMapper.toMetadataCreateItem(seasonId, playerId);
+  const seasonMetadataNodes = seasonMetadataResults.map(seasonMapper.toMetadataNode);
 
-  const result = await seasonMetadataClient.create(key, seasonMetadataCreateItem);
+  return await Promise.all(
+    playerIds
+      .filter((playerId) => !seasonMetadataNodes.some((node) => node.playerId !== playerId))
+      .map(async (playerId) => {
+        const key = { seasonId, playerId };
 
-  return buildSeasonMetadataResponse(result);
+        const seasonMetadataCreateItem = seasonMapper.toMetadataCreateItem(seasonId, playerId);
+
+        const result = await seasonMetadataClient.create(key, seasonMetadataCreateItem);
+
+        return buildSeasonMetadataResponse(result);
+      })
+  );
 };
 
 export const remove = async (seasonId: string): Promise<SuccessResponse> => {
