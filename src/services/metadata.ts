@@ -11,6 +11,7 @@ import {
   PROPERTIES_SEASON_METADATA,
   PROPERTIES_MATCH
 } from "mtglm-service-sdk/build/constants/mutable_properties";
+import { MatchView } from "mtglm-service-sdk/build/models/Views";
 
 const { SEASON_METADATA_TABLE_NAME, MATCH_TABLE_NAME } = process.env;
 
@@ -26,10 +27,15 @@ const buildSeasonMetadataResponse = async (
 ): Promise<SeasonMetadataResponse> => {
   const node = seasonMapper.toMetadataNode(result);
   const view = seasonMapper.toMetadataView(node);
+  
+  const matchViews: MatchView[] = [];
 
-  const matchResults = await matchClient.fetchByKeys(node.matchIds.map((id) => ({ matchId: id })));
-  const matchNodes = matchResults.map(matchMapper.toNode);
-  const matchViews = matchNodes.map(matchMapper.toView);
+  if (node.matchIds && node.matchIds.length) {
+    const matchResults = await matchClient.fetchByKeys(node.matchIds.map((id) => ({ matchId: id })));
+    const matchNodes = matchResults.map(matchMapper.toNode);
+
+    matchViews.concat(matchNodes.map(matchMapper.toView));
+  }
 
   return {
     ...view,
