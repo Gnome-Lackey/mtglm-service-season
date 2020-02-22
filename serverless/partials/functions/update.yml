@@ -37,8 +37,3 @@ iamRoleStatements:
     Action:
       - dynamodb:UpdateItem
     Resource: ${self:custom.seasonTableArn}
-  - Effect: Allow
-    Action:
-      - dynamodb:GetItem
-      - dynamodb:PutItem
-    Resource: ${self:custom.seasonMetadataTableArn}
