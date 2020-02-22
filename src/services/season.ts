@@ -3,8 +3,6 @@ import { AttributeMap } from "aws-sdk/clients/dynamodb";
 import { MTGLMDynamoClient } from "mtglm-service-sdk/build/clients/dynamo";
 import * as requestClient from "mtglm-service-sdk/build/clients/request";
 
-import * as metadataService from "./metadata";
-
 import * as seasonMapper from "mtglm-service-sdk/build/mappers/season";
 import * as playerMapper from "mtglm-service-sdk/build/mappers/player";
 import * as scryfallMapper from "mtglm-service-sdk/build/mappers/scryfall";
@@ -48,9 +46,7 @@ const buildDetailResponse = async (season: AttributeMap): Promise<SeasonResponse
 export const create = async (data: SeasonCreateRequest): Promise<SeasonResponse> => {
   const seasonItem = seasonMapper.toCreateItem(data);
 
-  const { seasonId, playerIds } = seasonItem;
-
-  await metadataService.createAll(seasonId, playerIds);
+  const { seasonId } = seasonItem;
 
   const result = await seasonClient.create({ seasonId }, seasonItem);
 
@@ -99,8 +95,6 @@ export const query = async (queryParams: SeasonQueryParams): Promise<SeasonRespo
 };
 
 export const remove = async (seasonId: string): Promise<SuccessResponse> => {
-  await metadataService.remove(seasonId);
-
   await seasonClient.remove({ seasonId });
 
   return { message: "Successfully deleted season." };
@@ -111,8 +105,6 @@ export const update = async (
   data: SeasonUpdateRequest
 ): Promise<SeasonResponse> => {
   const seasonItem = seasonMapper.toUpdateItem(data);
-
-  await metadataService.createAll(seasonId, data.players);
 
   const result = await seasonClient.update({ seasonId }, seasonItem);
 
