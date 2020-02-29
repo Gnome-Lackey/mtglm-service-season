@@ -6,7 +6,6 @@ import * as requestClient from "mtglm-service-sdk/build/clients/request";
 import * as seasonMapper from "mtglm-service-sdk/build/mappers/season";
 import * as playerMapper from "mtglm-service-sdk/build/mappers/player";
 import * as scryfallMapper from "mtglm-service-sdk/build/mappers/scryfall";
-import * as queryMapper from "mtglm-service-sdk/build/mappers/query";
 
 import * as standingsUtil from "mtglm-service-sdk/build/utils/standings";
 
@@ -64,7 +63,9 @@ export const get = async (seasonId: string): Promise<SeasonResponse> => {
 };
 
 export const getRecent = async (): Promise<SeasonResponse> => {
-  const seasonResults = await seasonClient.query({ isActive: true });
+  const queryParams = { isActive: true } as SeasonQueryParams;
+
+  const seasonResults = await seasonClient.query(queryParams);
 
   if (!seasonResults.length) {
     return null;
@@ -81,9 +82,7 @@ export const getRecent = async (): Promise<SeasonResponse> => {
 };
 
 export const query = async (queryParams: SeasonQueryParams): Promise<SeasonResponse[]> => {
-  const filters = queryMapper.toSeasonFilters(queryParams);
-
-  const seasonResults = await seasonClient.query(filters);
+  const seasonResults = await seasonClient.query(queryParams);
 
   if (!seasonResults.length) {
     return [];
