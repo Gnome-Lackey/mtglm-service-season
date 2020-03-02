@@ -63,9 +63,9 @@ export const get = async (seasonId: string): Promise<SeasonResponse> => {
 };
 
 export const getRecent = async (): Promise<SeasonResponse> => {
-  const queryParams = { isActive: true } as SeasonQueryParams;
+  const filters = seasonMapper.toFilters({ active: true });
 
-  const seasonResults = await seasonClient.query(queryParams);
+  const seasonResults = await seasonClient.query(filters);
 
   if (!seasonResults.length) {
     return null;
@@ -82,7 +82,9 @@ export const getRecent = async (): Promise<SeasonResponse> => {
 };
 
 export const query = async (queryParams: SeasonQueryParams): Promise<SeasonResponse[]> => {
-  const seasonResults = await seasonClient.query(queryParams);
+  const filters = seasonMapper.toFilters(queryParams);
+
+  const seasonResults = await seasonClient.query(filters);
 
   if (!seasonResults.length) {
     return [];
