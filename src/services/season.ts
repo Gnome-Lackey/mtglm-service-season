@@ -1,13 +1,11 @@
 import { AttributeMap } from "aws-sdk/clients/dynamodb";
 
-import { MTGLMDynamoClient } from "mtglm-service-sdk/build/clients/dynamo";
-import * as requestClient from "mtglm-service-sdk/build/clients/request";
+import MTGLMDynamoClient from "mtglm-service-sdk/build/clients/dynamo";
+import MTGLMRequestClient from "mtglm-service-sdk/build/clients/request";
 
 import SeasonMapper from "mtglm-service-sdk/build/mappers/season";
 import PlayerMapper from "mtglm-service-sdk/build/mappers/player";
 import ScryfallMapper from "mtglm-service-sdk/build/mappers/scryfall";
-
-import * as standingsUtil from "mtglm-service-sdk/build/utils/standings";
 
 import { SuccessResponse, SeasonResponse } from "mtglm-service-sdk/build/models/Responses";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
@@ -28,6 +26,7 @@ export default class SeasonService {
 
   private playerClient = new MTGLMDynamoClient(this.playerTableName, PROPERTIES_PLAYER);
   private seasonClient = new MTGLMDynamoClient(this.seasonTableName, PROPERTIES_SEASON);
+  private requestClient = new MTGLMRequestClient();
 
   private async buildDetailResponse(season: AttributeMap): Promise<SeasonResponse> {
     const seasonNode = this.seasonMapper.toNode(season);
@@ -36,16 +35,13 @@ export default class SeasonService {
     const playerPromises = playerIds.map((playerId) => this.playerClient.fetchByKey({ playerId }));
     const playerResults = await Promise.all(playerPromises);
     const playerNodes = playerResults.map(this.playerMapper.toNode);
-    const sortedPlayerNodes = standingsUtil.sort(playerNodes);
 
-    const setResult = await requestClient.get(
-      `https://api.scryfall.com/sets/${seasonNode.setCode}`
-    );
+    const setUrl = `https://api.scryfall.com/sets/${seasonNode.setCode}`;
+    const setResult = await this.requestClient.get(setUrl);
 
     return {
       ...this.seasonMapper.toView(seasonNode),
-      players: sortedPlayerNodes.map(this.playerMapper.toView),
-      // TODO: Find out best way to remove any
+      players: playerNodes.map(this.playerMapper.toView),
       set: this.scryfallMapper.toSetView(setResult as any)
     };
   }

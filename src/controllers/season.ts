@@ -5,91 +5,92 @@ import { SeasonQueryParams } from "mtglm-service-sdk/build/models/QueryParameter
 import { LambdaResponse } from "mtglm-service-sdk/build/models/Lambda";
 import { SeasonCreateRequest, SeasonUpdateRequest } from "mtglm-service-sdk/build/models/Requests";
 
-import * as service from "../services/season";
+import SeasonService from "../services/season";
 
-export const create = async (data: SeasonCreateRequest): Promise<LambdaResponse> => {
-  try {
-    const result = await service.create(data);
+export default class SeasonController {
+  private service = new SeasonService();
 
-    logSuccess("DYNAMO", "POST season", result);
+  async create(data: SeasonCreateRequest): Promise<LambdaResponse> {
+    try {
+      const result = await this.service.create(data);
 
-    return handleSuccess(result);
-  } catch (error) {
-    logFailure("DYNAMO", "POST season", error);
+      logSuccess("DYNAMO", "POST season", result);
 
-    return handleError(error);
+      return handleSuccess(result);
+    } catch (error) {
+      logFailure("DYNAMO", "POST season", error);
+
+      return handleError(error);
+    }
   }
-};
 
-export const current = async (): Promise<LambdaResponse> => {
-  try {
-    const result = await service.getRecent();
+  async current(): Promise<LambdaResponse> {
+    try {
+      const result = await this.service.getRecent();
 
-    logSuccess("DYNAMO", "GET season", result);
+      logSuccess("DYNAMO", "GET season", result);
 
-    return handleSuccess(result);
-  } catch (error) {
-    logFailure("DYNAMO", "GET season", error);
+      return handleSuccess(result);
+    } catch (error) {
+      logFailure("DYNAMO", "GET season", error);
 
-    return handleError(error);
+      return handleError(error);
+    }
   }
-};
 
-export const get = async (seasonId: string): Promise<LambdaResponse> => {
-  try {
-    const result = await service.get(seasonId);
+  async get(seasonId: string): Promise<LambdaResponse> {
+    try {
+      const result = await this.service.get(seasonId);
 
-    logSuccess("DYNAMO", "GET season", result);
+      logSuccess("DYNAMO", "GET season", result);
 
-    return handleSuccess(result);
-  } catch (error) {
-    logFailure("DYNAMO", "GET season", error);
+      return handleSuccess(result);
+    } catch (error) {
+      logFailure("DYNAMO", "GET season", error);
 
-    return handleError(error);
+      return handleError(error);
+    }
   }
-};
 
-export const query = async (queryParams: SeasonQueryParams): Promise<LambdaResponse> => {
-  try {
-    const result = await service.query(queryParams);
+  async query(queryParams: SeasonQueryParams): Promise<LambdaResponse> {
+    try {
+      const result = await this.service.query(queryParams);
 
-    logSuccess("DYNAMO", "GET all seasons", result);
+      logSuccess("DYNAMO", "GET all seasons", result);
 
-    return handleSuccess(result);
-  } catch (error) {
-    logFailure("DYNAMO", "GET all seasons", error);
+      return handleSuccess(result);
+    } catch (error) {
+      logFailure("DYNAMO", "GET all seasons", error);
 
-    return handleError(error);
+      return handleError(error);
+    }
   }
-};
 
-export const remove = async (seasonId: string): Promise<LambdaResponse> => {
-  try {
-    const result = await service.remove(seasonId);
+  async remove(seasonId: string): Promise<LambdaResponse> {
+    try {
+      const result = await this.service.remove(seasonId);
 
-    logSuccess("DYNAMO", "DELETE season", result);
+      logSuccess("DYNAMO", "DELETE season", result);
 
-    return handleSuccess(result);
-  } catch (error) {
-    logFailure("DYNAMO", "DELETE season", error);
+      return handleSuccess(result);
+    } catch (error) {
+      logFailure("DYNAMO", "DELETE season", error);
 
-    return handleError(error);
+      return handleError(error);
+    }
   }
-};
 
-export const update = async (
-  seasonId: string,
-  data: SeasonUpdateRequest
-): Promise<LambdaResponse> => {
-  try {
-    const result = await service.update(seasonId, data);
+  async update(seasonId: string, data: SeasonUpdateRequest): Promise<LambdaResponse> {
+    try {
+      const result = await this.service.update(seasonId, data);
 
-    logSuccess("DYNAMO", "UPDATE season", result);
+      logSuccess("DYNAMO", "UPDATE season", result);
 
-    return handleSuccess(result);
-  } catch (error) {
-    logFailure("DYNAMO", "UPDATE season", error);
+      return handleSuccess(result);
+    } catch (error) {
+      logFailure("DYNAMO", "UPDATE season", error);
 
-    return handleError(error);
+      return handleError(error);
+    }
   }
-};
+}
