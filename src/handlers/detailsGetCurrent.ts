@@ -2,7 +2,9 @@ import requestMiddleware from "mtglm-service-sdk/build/middleware/requestResourc
 
 import { LambdaResponse } from "mtglm-service-sdk/build/models/Lambda";
 
-import * as controller from "../controllers";
+import SeasonController from "../controllers/season";
+
+const controller = new SeasonController();
 
 module.exports.handler = requestMiddleware(
   async (): Promise<LambdaResponse> => {
