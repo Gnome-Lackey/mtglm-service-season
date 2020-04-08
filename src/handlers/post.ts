@@ -4,12 +4,15 @@ import { LambdaResponse } from "mtglm-service-sdk/build/models/Lambda";
 import { SeasonPathParameters } from "mtglm-service-sdk/build/models/PathParameters";
 import { SeasonCreateRequest } from "mtglm-service-sdk/build/models/Requests";
 
-import * as controller from "../controllers";
+import SeasonController from "../controllers/season";
+
+const controller = new SeasonController();
 
 module.exports.handler = requestMiddleware(
   async (path: SeasonPathParameters, data: SeasonCreateRequest): Promise<LambdaResponse> => {
     const response = await controller.create(data);
 
     return response;
-  }
+  },
+  true
 );

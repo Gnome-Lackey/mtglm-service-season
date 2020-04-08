@@ -30,6 +30,10 @@ iamRoleStatements:
   - Effect: Allow
     Action:
       - dynamodb:GetItem
-      - dynamodb:PutItem
-    Resource:
-      - Fn::GetAtt: [SeasonsTable, Arn]
+    Resource: 
+      - ${self:custom.seasonTableArn}
+      - ${self:custom.playerTableArn}
+  - Effect: Allow
+    Action:
+      - dynamodb:UpdateItem
+    Resource: ${self:custom.seasonTableArn}

@@ -10,16 +10,9 @@
         "title": "SeasonPlayerIds"
       }
     },
-    "matches": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "title": "SeasonMatchIds"
-      }
-    },
     "set": {
       "type": "string",
-      "title": "SeasonSetId"
+      "title": "SeasonSetCode"
     },
     "endedOOn": {
       "type": "string",

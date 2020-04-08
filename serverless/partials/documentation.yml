@@ -19,7 +19,13 @@ models:
   - name: "SeasonResponse"
     description: "Get specific season response body."
     contentType: "application/json"
+  - name: "SeasonDetailResponse"
+    description: "Get specific detailed season response body."
+    contentType: "application/json"
     schema: ${file(models/responses/season.json)}
+  - name: "SeasonsDetailResponse"
+    description: "List of detailed season(es) response body."
+    contentType: "application/json"
   - name: "SeasonsResponse"
     description: "List of season(es) response body."
     contentType: "application/json"
@@ -31,9 +37,13 @@ models:
 resources:
   - path: Create
     description: "Creates a new season."
-  - path: Get
-    description: "Retrieves a season."
+  - path: GetDetails
+    description: "Retrieves season details."
+  - path: GetAllDetails
+    description: "Retrieve all season details."
   - path: Delete
     description: "Deletes a season."
+  - path: QueryDetails
+    description: "Get all season details by query."
   - path: Update
     description: "Updates a season."
