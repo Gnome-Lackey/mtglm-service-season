@@ -28,7 +28,7 @@ export default class SeasonService {
   private seasonClient = new MTGLMDynamoClient(this.seasonTableName, PROPERTIES_SEASON);
   private requestClient = new MTGLMRequestClient();
 
-  private async buildDetailResponse(season: AttributeMap): Promise<SeasonResponse> {
+  private buildDetailResponse = async (season: AttributeMap): Promise<SeasonResponse> => {
     const seasonNode = this.seasonMapper.toNode(season);
 
     const playerIds = seasonNode.playerIds || [];
@@ -44,9 +44,9 @@ export default class SeasonService {
       players: playerNodes.map(this.playerMapper.toView),
       set: this.scryfallMapper.toSetView(setResult as any)
     };
-  }
+  };
 
-  async create(data: SeasonCreateRequest): Promise<SeasonResponse> {
+  create = async (data: SeasonCreateRequest): Promise<SeasonResponse> => {
     const seasonItem = this.seasonMapper.toCreateItem(data);
 
     const { seasonId } = seasonItem;
@@ -54,9 +54,9 @@ export default class SeasonService {
     const result = await this.seasonClient.create({ seasonId }, seasonItem);
 
     return this.buildDetailResponse(result);
-  }
+  };
 
-  async get(seasonId: string): Promise<SeasonResponse> {
+  get = async (seasonId: string): Promise<SeasonResponse> => {
     const seasonResults = await this.seasonClient.query({ seasonId });
 
     if (!seasonResults.length) {
@@ -64,9 +64,9 @@ export default class SeasonService {
     }
 
     return this.buildDetailResponse(seasonResults[0]);
-  }
+  };
 
-  async getRecent(): Promise<SeasonResponse> {
+  getRecent = async (): Promise<SeasonResponse> => {
     const filters = this.seasonMapper.toFilters({ active: "true" });
 
     const seasonResults = await this.seasonClient.query(filters);
@@ -83,9 +83,9 @@ export default class SeasonService {
     }, seasonResults[0]);
 
     return this.buildDetailResponse(seasonResult);
-  }
+  };
 
-  async query(queryParams: SeasonQueryParams): Promise<SeasonResponse[]> {
+  query = async (queryParams: SeasonQueryParams): Promise<SeasonResponse[]> => {
     const filters = this.seasonMapper.toFilters(queryParams);
 
     const seasonResults = await this.seasonClient.query(filters);
@@ -97,19 +97,19 @@ export default class SeasonService {
     const detailedResults = await Promise.all(seasonResults.map(this.buildDetailResponse));
 
     return detailedResults;
-  }
+  };
 
-  async remove(seasonId: string): Promise<SuccessResponse> {
+  remove = async (seasonId: string): Promise<SuccessResponse> => {
     await this.seasonClient.remove({ seasonId });
 
     return { message: "Successfully deleted season." };
-  }
+  };
 
-  async update(seasonId: string, data: SeasonUpdateRequest): Promise<SeasonResponse> {
+  update = async (seasonId: string, data: SeasonUpdateRequest): Promise<SeasonResponse> => {
     const seasonItem = this.seasonMapper.toUpdateItem(data);
 
     const result = await this.seasonClient.update({ seasonId }, seasonItem);
 
     return this.buildDetailResponse(result);
-  }
+  };
 }
